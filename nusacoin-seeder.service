@@ -5,13 +5,16 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-# Ganti <user> dengan user pemilik binary, dan sesuaikan path + flag.
+# Ganti <user> dengan user pemilik binary, sesuaikan path,
+# dan sesuaikan -h/-n/-m dengan hostname mesin ini:
+#   204.13.232.148 -> seed.nusacoin.org / ns1.nusacoin.org
+#   202.10.38.22   -> seed.nusachain.org / ns1.nusachain.org
 User=<user>
 WorkingDirectory=/opt/nusacoin-seeder
 ExecStart=/opt/nusacoin-seeder/dnsseed \
-  -h seed.nusachain.org \
-  -n ns1.nusachain.org \
-  -m admin.nusachain.org \
+  -h seed.nusacoin.org \
+  -n ns1.nusacoin.org \
+  -m admin.nusacoin.org \
   --p2port 28573 \
   --magic 4e555341 \
   -s 163.245.193.102 \
