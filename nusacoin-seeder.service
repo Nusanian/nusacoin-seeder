@@ -1,0 +1,24 @@
+[Unit]
+Description=Nusacoin DNS seeder
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Ganti <user> dengan user pemilik binary, dan sesuaikan path + flag.
+User=<user>
+WorkingDirectory=/opt/nusacoin-seeder
+ExecStart=/opt/nusacoin-seeder/dnsseed \
+  -h seed.nusachain.org \
+  -n ns1.nusachain.org \
+  -m admin.nusachain.org \
+  --p2port 28573 \
+  --magic 4e555341 \
+  -s 163.245.193.102 \
+  -s 204.13.232.148 \
+  -s 202.10.38.22
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
