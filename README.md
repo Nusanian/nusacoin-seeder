@@ -239,6 +239,15 @@ node tetap bisa bootstrap manual dengan `-addnode` / `-seednode`.
 - **Mesin seeder offline**: node yang sudah berjalan tidak terpengaruh
   (mereka sudah punya peer). Seeder yang kembali online langsung lanjut
   dari `dnsseed.dat` — tanpa `-s` lagi, kecuali databasenya hilang.
+- **Pindah ke VPS baru**: delegasi NS tidak perlu diubah (seednx tetap
+  menunjuk ns1). Yang diubah hanya glue: record A `ns1` → IP VPS baru
+  (propagasi ±5 menit karena TTL 300). Di VPS baru, pasang binary +
+  service file dengan `-a` = IP baru, lalu start — crawler membangun
+  database dari nol lewat node `-s`; jawaban pertama muncul dalam
+  hitungan menit, daftarnya makin lengkap dalam hitungan jam. Selama
+  jeda, seed statis tetap menjawab, jadi jaringan tidak kosong.
+  (Kalau VPS baru mendapat IP yang sama dengan IP lama, tidak ada
+  perubahan DNS sama sekali.)
 - **Sinkronisasi file**: file service di repo adalah sumber kebenaran.
   Edit lokal di VPS (mis. via `sed`) WAJIB digabung kembali ke repo
   sebelum push berikutnya — kalau tidak, tarik-ulang berikutnya akan
