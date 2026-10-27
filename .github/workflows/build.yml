@@ -1,0 +1,29 @@
+name: Build dnsseed
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    # ubuntu-22.04 disengaja: sama dengan VPS target, supaya binary
+    # tidak menuntut glibc yang lebih baru dari yang ada di VPS.
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Clone upstream bitcoin-seeder
+        run: git clone --depth 1 https://github.com/sipa/bitcoin-seeder.git
+      - name: Build
+        run: make -C bitcoin-seeder
+      - name: Verify binary
+        run: |
+          ls -l bitcoin-seeder/dnsseed
+          file bitcoin-seeder/dnsseed
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: dnsseed-release
+          files: bitcoin-seeder/dnsseed
