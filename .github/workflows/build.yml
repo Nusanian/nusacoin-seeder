@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Clone upstream bitcoin-seeder
         run: git clone --depth 1 https://github.com/sipa/bitcoin-seeder.git
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y libboost-dev
       - name: Build
         run: make -C bitcoin-seeder
       - name: Verify binary
