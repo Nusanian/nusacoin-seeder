@@ -8,6 +8,7 @@ Type=simple
 User=root
 WorkingDirectory=/opt/nusacoin-seeder
 ExecStart=/opt/nusacoin-seeder/dnsseed \
+  -a 204.13.232.148 \
   -h seednx.taobot.org \
   -n ns1.taobot.org \
   -m admin.taobot.org \
