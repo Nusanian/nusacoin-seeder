@@ -37,6 +37,37 @@ lolos uji crawler saat itu.
    (minimal 1). Di jaringan kecil, jawaban bisa hanya 2–3 IP; itu normal,
    bukan kerusakan.
 
+## Syarat node masuk daftar (kriteria "good")
+
+Seeder hanya membagikan node yang lolos semua uji berikut (dari `IsGood()`
+di source upstream). Satu gagal, tidak masuk daftar:
+
+1. Bisa dihubungi dan handshake P2P berhasil — crawler konek TCP, tukar
+   `version`/`verack`, lalu membaca tinggi blok dan servis node itu.
+2. Port = port default P2P (28573). Node di port custom tidak masuk daftar,
+   walau sehat.
+3. Full node — flag servis `NODE_NETWORK` (menyediakan blok), bukan light
+   client.
+4. IP routable (publik) — IP privat seperti 192.168.x.x dicoret.
+5. Versi protokol ≥ 70001 (node Nusacoin sekarang 70015/70016).
+6. Tinggi blok ≥ `--minheight` (deployment ini: 70000).
+7. Tidak sedang di-ban sementara — node yang berulang kali gagal diuji
+   dicoret untuk sementara waktu.
+
+### Bisakah node rumahan (non-VPS) ikut dibagikan?
+
+Ya — sebagai peer, bukan sebagai seed host. Syaratnya: node full, port
+28573 bisa dijangkau dari internet (port forwarding di router + firewall
+dibuka), punya IP publik, dan node mengiklankan IP publiknya (bukan IP
+lokal) supaya ditemukan lewat gossip antar-node (`getaddr`). Kalau koneksi
+di balik CGNAT atau ISP memblokir port masuk, crawler tidak bisa konek
+sehingga node tidak masuk daftar. Kalau IP publik berubah-ubah, entri lama
+mati dan harus ditemukan ulang.
+
+Menjalankan dnsseed sendiri (menjadi seed host) secara teknis bisa, tapi
+seed host yang hanya online sesekali tidak berguna saat mesinnya mati —
+karena itu seed host ditaruh di VPS yang hidup 24/7.
+
 ## Prasyarat (per seeder)
 
 - VPS Ubuntu 22.04/24.04 dengan IP publik tetap
